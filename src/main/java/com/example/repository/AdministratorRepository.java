@@ -102,6 +102,7 @@ public class AdministratorRepository {
 	 * メールアドレスから管理者情報を取得します.
 	 * 
 	 * @param mailAddress メールアドレス
+	 * @param password パスワード
 	 * @return 管理者情報 存在しない場合はnullを返します
 	 */
 	public Administrator findByMailAddress(String mailAddress) {
@@ -111,6 +112,7 @@ public class AdministratorRepository {
 		if (administratorList.size() == 0) {
 			return null;
 		}
-		return administratorList.get(0);
+		Administrator administrator = administratorList.get(0);
+		return administrator;
 	}
 }
