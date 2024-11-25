@@ -40,4 +40,12 @@ public class AdministratorService {
 		Administrator administrator = administratorRepository.findByMailAddressAndPassward(mailAddress, password);
 		return administrator;
 	}
+
+	/**
+	 * メールアドレスの重複をチェックします
+	 * @return 結果
+	 */
+	public boolean mailTaken(Administrator administrator) {
+		return administratorRepository.mailTaken(administrator);
+	}
 }

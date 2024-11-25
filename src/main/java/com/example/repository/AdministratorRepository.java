@@ -74,9 +74,28 @@ public class AdministratorRepository {
 	 * @param administrator 管理者情報
 	 */
 	public void insert(Administrator administrator) {
+
 		SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
 		String sql = "insert into administrators(name,mail_address,password)values(:name,:mailAddress,:password);";
 		template.update(sql, param);
+	}
+
+	/**
+	 * メールアドレスの重複をチェックします
+	 * @return　チェックした結果
+	 */
+	public boolean mailTaken(Administrator administrator) {
+		String sql = "select * from administrators where mail_address=:mailAddress";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", administrator.getMailAddress());
+
+		boolean result = false;
+		try {
+			template.queryForObject(sql, param, ADMINISTRATOR_ROW_MAPPER);
+			result = false;
+		} catch (Exception e) {
+			result = true;
+		}
+		return result;
 	}
 
 	/**
@@ -94,5 +113,4 @@ public class AdministratorRepository {
 		}
 		return administratorList.get(0);
 	}
-
 }
