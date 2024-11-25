@@ -45,7 +45,7 @@ public class AdministratorService {
 	 * メールアドレスの重複をチェックします
 	 * @return 結果
 	 */
-	public boolean mailTaken(Administrator administrator) {
-		return administratorRepository.mailTaken(administrator);
+	public boolean mailTaken(String mail) {
+		return administratorRepository.mailTaken(mail);
 	}
 }

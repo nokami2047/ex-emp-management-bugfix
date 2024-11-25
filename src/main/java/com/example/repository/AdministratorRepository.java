@@ -84,16 +84,16 @@ public class AdministratorRepository {
 	 * メールアドレスの重複をチェックします
 	 * @return　チェックした結果
 	 */
-	public boolean mailTaken(Administrator administrator) {
+	public boolean mailTaken(String mail) {
 		String sql = "select * from administrators where mail_address=:mailAddress";
-		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", administrator.getMailAddress());
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mail);
 
 		boolean result = false;
 		try {
 			template.queryForObject(sql, param, ADMINISTRATOR_ROW_MAPPER);
-			result = false;
-		} catch (Exception e) {
 			result = true;
+		} catch (Exception e) {
+			result = false;
 		}
 		return result;
 	}
