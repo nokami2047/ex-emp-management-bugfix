@@ -20,6 +20,13 @@ public class LoginForm {
 	@Size(min=1, max=16, message="パスワードは１文字から１６文字以内で入力してください")
 	@NotBlank(message = "パスワードが未入力です")
 	private String password;
+	//private String confirmPassword;
+	// public String getConfirmPassword() {
+	// 	return confirmPassword;
+	// }
+	// public void setConfirmPassword(String confirmPassword) {
+	// 	this.confirmPassword = confirmPassword;
+	// }
 
 	public String getMailAddress() {
 		return mailAddress;

@@ -79,8 +79,23 @@
                     id="inputPassword"
                     class="form-control"
                     placeholder="Password"
+                    autocomplete="on"
                   />
                 </div>
+
+                <!-- 確認用パスワード
+                <div class="form-group">
+                  <label for="inputConfirm">確認用パスワード:</label>
+                  <div th:errors="*{confirmPassword}" style="color: red;"></div>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    id="inputConfirm"
+                    class="form-control"
+                    placeholder="Password"
+                  />
+                </div> -->
+
                 <div class="form-group">
                   <button type="submit" class="btn btn-primary">
                     ログイン
