@@ -89,8 +89,17 @@ public class AdministratorController {
 		if(r) {
 			String msg = "メールアドレスが重複しています";
 			model.addAttribute("msg", msg);
+
+			if(!form.getPassword().equals(form.getConfirmPassword())){
+				String passMsg = "パスワードと確認用パスワードが一致しません";
+				model.addAttribute("passMsg", passMsg);
+			}
 			return toInsert(model);
-		}else {
+		}else if(!form.getPassword().equals(form.getConfirmPassword())){
+			String passMsg = "パスワードと確認用パスワードが一致しません";
+			model.addAttribute("passMsg", passMsg);
+			return toInsert(model);
+		} else{
 			// フォームからドメインにプロパティ値をコピー
 			BeanUtils.copyProperties(form, administrator);
 			administratorService.insert(administrator);
