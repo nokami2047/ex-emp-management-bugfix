@@ -26,7 +26,7 @@ import jakarta.servlet.http.HttpSession;
  *
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("")
 public class AdministratorController {
 
 	@Autowired
