@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.example.domain.Employee;
 import com.example.form.UpdateEmployeeForm;
 import com.example.service.EmployeeService;
@@ -93,4 +92,15 @@ public class EmployeeController {
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
 	}
+
+	@PostMapping("/list")
+    public String serchEmployee(String name, Model model) {
+        List<Employee> employeeList = employeeService.searchEmployees(name);
+        if (employeeList.isEmpty()) {
+            model.addAttribute("message", "1件もありませんでした");
+			employeeList = employeeService.showList();
+        }
+        model.addAttribute("employeeList", employeeList);
+		return "employee/list";
+    }
 }

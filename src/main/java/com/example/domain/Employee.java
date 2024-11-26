@@ -1,6 +1,7 @@
 package com.example.domain;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 従業員情報を表すドメイン.

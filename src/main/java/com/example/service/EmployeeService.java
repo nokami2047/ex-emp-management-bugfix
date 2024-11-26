@@ -52,4 +52,12 @@ public class EmployeeService {
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
 	}
+
+	public List<Employee> searchEmployees(String name) {
+        if (name == null || name.isEmpty()) {
+            return employeeRepository.findAll();
+        } else {
+            return employeeRepository.serchEmployee(name);
+        }
+    }
 }
