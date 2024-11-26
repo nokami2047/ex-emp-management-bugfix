@@ -72,7 +72,9 @@
                         th:field="*{name}"
                         th:errorclass="error-input"
                         value="山田太郎"
+                        th:value="*{name}"
                       />
+                      <span></span>
                     </div>
                   </div>
                 </div>
@@ -87,6 +89,7 @@
                       >
                         メールアドレスを入力してください
                       </label>
+                      <span th:text="${msg}" class="error-messages"></span>
                       <input
                         type="text"
                         name="mailAddress"
@@ -96,6 +99,8 @@
                         th:field="*{mailAddress}"
                         th:errorclass="error-input"
                         value="yamada@mail.com"
+                        th:value="*{mailAddress}"
+                        th:classappend="${msg != null} ? 'error-input' : ''"
                       />
                     </div>
                   </div>
@@ -106,11 +111,14 @@
                     <div class="col-sm-12">
                       <label for="password"> パスワード: </label>
                       <label
+                        th:if="${#fields.hasErrors('password')}"
                         th:errors="*{password}"
                         class="error-messages"
                       >
+
                         パスワードを入力してください
                       </label>
+                      
                       <input
                         type="password"
                         name="password"
@@ -120,6 +128,7 @@
                         th:field="*{password}"
                         th:errorclass="error-input"
                         value="xxxxxxxx"
+                        th:value="*{password}"
                       />
                     </div>
                   </div>
@@ -136,7 +145,6 @@
                 </div>
               </fieldset>
             </form>
-
             <!-- ここから下を編集する必要はありません -->
           </div>
         </div>
