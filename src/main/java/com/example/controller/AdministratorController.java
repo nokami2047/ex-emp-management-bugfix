@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.domain.Administrator;
 import com.example.form.InsertAdministratorForm;
@@ -88,8 +89,17 @@ public class AdministratorController {
 		if(r) {
 			String msg = "メールアドレスが重複しています";
 			model.addAttribute("msg", msg);
+
+			if(!form.getPassword().equals(form.getConfirmPassword())){
+				String passMsg = "パスワードと確認用パスワードが一致しません";
+				model.addAttribute("passMsg", passMsg);
+			}
 			return toInsert(model);
-		}else {
+		}else if(!form.getPassword().equals(form.getConfirmPassword())){
+			String passMsg = "パスワードと確認用パスワードが一致しません";
+			model.addAttribute("passMsg", passMsg);
+			return toInsert(model);
+		} else{
 			// フォームからドメインにプロパティ値をコピー
 			BeanUtils.copyProperties(form, administrator);
 			administratorService.insert(administrator);
@@ -122,18 +132,19 @@ public class AdministratorController {
 	public String login(
 		@Validated LoginForm form,
 		BindingResult result,
-		//RedirectAttributes redirectAttributes,
+		RedirectAttributes redirectAttributes,
 		Model model) {
 
 		if(result.hasErrors()) {
 			return toLogin(model);
 		}
 		
-		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
-		// if (administrator == null) {
-		// 	redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
-		// 	return "redirect:/";
-		// }
+		try {
+			Administrator administrator = administratorService.login(form.getMailAddress(),form.getPassword());
+			redirectAttributes.addAttribute("name", administrator.getName());
+		} catch (Exception e) {
+			return toLogin(model);
+		}
 		return "redirect:/employee/showList";
 	}
 
