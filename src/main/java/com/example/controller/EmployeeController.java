@@ -82,7 +82,8 @@ public class EmployeeController {
 	 * @return 従業員一覧画面へリダクレクト
 	 */
 	@PostMapping("/update")
-	public String update(@Validated UpdateEmployeeForm form, BindingResult result, Model model) {
+	public String update(@Validated UpdateEmployeeForm form, 
+	BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return showDetail(form.getId(), model);
 		}

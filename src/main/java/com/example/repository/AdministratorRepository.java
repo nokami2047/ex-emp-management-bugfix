@@ -111,6 +111,7 @@ public class AdministratorRepository {
 		if (administratorList.size() == 0) {
 			return null;
 		}
-		return administratorList.get(0);
+		Administrator administrator = administratorList.get(0);
+		return administrator;
 	}
 }

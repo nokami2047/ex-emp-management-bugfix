@@ -119,6 +119,8 @@
                         パスワードを入力してください
                       </label>
                       
+                      <span th:text="${passMsg}" class="error-messages"></span>
+                      <form:errors path="check" cssClass="error" />
                       <input
                         type="password"
                         name="password"
@@ -129,6 +131,24 @@
                         th:errorclass="error-input"
                         value="xxxxxxxx"
                         th:value="*{password}"
+                        th:classappend="${passMsg != null} ? 'error-input' : ''"
+                      />
+                    </div>
+
+                    <div class="col-sm-12">
+                      <label for="confirmPassword"> 確認用パスワード: </label>
+                      <label th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error-messages">
+                        パスワードを入力してください
+                      </label>
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        class="form-control"
+                        placeholder="確認用パスワード"
+                        th:field="*{confirmPassword}"
+                        th:errorclass="error-input"
+                        th:classappend="${passMsg != null} ? 'error-input' : ''"
                       />
                     </div>
                   </div>

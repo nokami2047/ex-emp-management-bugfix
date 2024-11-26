@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.domain.Administrator;
 import com.example.form.InsertAdministratorForm;
@@ -75,29 +76,36 @@ public class AdministratorController {
 	 */
 	@PostMapping("/insert")
 	public String insert(
-		@Validated InsertAdministratorForm form,
-		BindingResult result,
-		Model model) {
+			@Validated InsertAdministratorForm form,
+			BindingResult result,
+			Model model) {
 		Administrator administrator = new Administrator();
-		
-		if(result.hasErrors()) {
+
+		if (result.hasErrors()) {
 			return toInsert(model);
 		}
 
 		boolean r = administratorService.mailTaken(form.getMailAddress());
-		if(r) {
+		if (r) {
 			String msg = "メールアドレスが重複しています";
 			model.addAttribute("msg", msg);
+
+			if (!form.getPassword().equals(form.getConfirmPassword())) {
+				String passMsg = "パスワードと確認用パスワードが一致しません";
+				model.addAttribute("passMsg", passMsg);
+			}
 			return toInsert(model);
-		}else {
+		} else if (!form.getPassword().equals(form.getConfirmPassword())) {
+			String passMsg = "パスワードと確認用パスワードが一致しません";
+			model.addAttribute("passMsg", passMsg);
+			return toInsert(model);
+		} else {
 			// フォームからドメインにプロパティ値をコピー
 			BeanUtils.copyProperties(form, administrator);
 			administratorService.insert(administrator);
-			 return "redirect:/";
+			return "redirect:/";
 		}
-		}
-	
-		
+	}
 
 	/////////////////////////////////////////////////////
 	// ユースケース：ログインをする
@@ -120,20 +128,17 @@ public class AdministratorController {
 	 */
 	@PostMapping("/login")
 	public String login(
-		@Validated LoginForm form,
-		BindingResult result,
-		//RedirectAttributes redirectAttributes,
+		LoginForm form,
+		RedirectAttributes redirectAttributes,
 		Model model) {
-
-		if(result.hasErrors()) {
-			return toLogin(model);
-		}
+			Administrator administrator = administratorService.login(form.getMailAddress(),form.getPassword());
+			
+			if (administrator == null) {
+				redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
+				return "redirect:/";
+			}
+			session.setAttribute("administratorName", administrator.getName());
 		
-		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
-		// if (administrator == null) {
-		// 	redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
-		// 	return "redirect:/";
-		// }
 		return "redirect:/employee/showList";
 	}
 
