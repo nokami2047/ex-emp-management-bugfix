@@ -131,7 +131,7 @@ public class AdministratorController {
 		}
 		
 		try {
-			Administrator administrator = administratorService.login(form.getMailAddress());
+			Administrator administrator = administratorService.login(form.getMailAddress(),form.getPassword());
 			redirectAttributes.addAttribute("name", administrator.getName());
 		} catch (Exception e) {
 			return toLogin(model);

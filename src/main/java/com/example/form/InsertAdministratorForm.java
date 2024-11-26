@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Size;
  */
 public class InsertAdministratorForm {
 	/** 名前 */
-	@NotBlank(message = "名前は未入力です")
+	@NotBlank(message = "名前が未入力です")
 	private String name;
 	/** メールアドレス */
 	@Email(message = "メールアドレスの形式が不正です")

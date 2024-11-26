@@ -1,5 +1,7 @@
 package com.example.form;
 
+import jakarta.validation.constraints.AssertFalse;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -20,13 +22,23 @@ public class LoginForm {
 	@Size(min=1, max=16, message="パスワードは１文字から１６文字以内で入力してください")
 	@NotBlank(message = "パスワードが未入力です")
 	private String password;
-	//private String confirmPassword;
-	// public String getConfirmPassword() {
-	// 	return confirmPassword;
-	// }
-	// public void setConfirmPassword(String confirmPassword) {
-	// 	this.confirmPassword = confirmPassword;
-	// }
+
+	@Size(min=1, max=16, message="パスワードは１文字から１６文字以内で入力してください")
+	@NotBlank(message = "パスワードが未入力です")
+	private String confirmPassword;
+
+	@AssertFalse(message = "パスワードと確認用パスワードが一致しません")
+	public boolean check() {
+		return password.equals(confirmPassword);
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
 
 	public String getMailAddress() {
 		return mailAddress;
