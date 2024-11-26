@@ -96,7 +96,14 @@
         >
           <!-- ここから上を編集する必要はありません -->
 
-          <!-- ここにモックのtable要素を貼り付けます -->
+          <!-- ここにモックのtable要素を貼り付けます --> 
+          <form th:action=@{/employee/list} method="post">
+            <div>
+              <span th:text="${message}" style="color: red;"></span><br>
+              <input type="search" name="name" placeholder="キーワードを入力">
+              <button type="submit">検索</button>
+            </div>
+          </form>
 
           <table class="table table-striped">
             <thead>
