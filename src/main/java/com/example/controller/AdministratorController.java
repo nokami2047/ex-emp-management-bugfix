@@ -76,38 +76,36 @@ public class AdministratorController {
 	 */
 	@PostMapping("/insert")
 	public String insert(
-		@Validated InsertAdministratorForm form,
-		BindingResult result,
-		Model model) {
+			@Validated InsertAdministratorForm form,
+			BindingResult result,
+			Model model) {
 		Administrator administrator = new Administrator();
-		
-		if(result.hasErrors()) {
+
+		if (result.hasErrors()) {
 			return toInsert(model);
 		}
 
 		boolean r = administratorService.mailTaken(form.getMailAddress());
-		if(r) {
+		if (r) {
 			String msg = "メールアドレスが重複しています";
 			model.addAttribute("msg", msg);
 
-			if(!form.getPassword().equals(form.getConfirmPassword())){
+			if (!form.getPassword().equals(form.getConfirmPassword())) {
 				String passMsg = "パスワードと確認用パスワードが一致しません";
 				model.addAttribute("passMsg", passMsg);
 			}
 			return toInsert(model);
-		}else if(!form.getPassword().equals(form.getConfirmPassword())){
+		} else if (!form.getPassword().equals(form.getConfirmPassword())) {
 			String passMsg = "パスワードと確認用パスワードが一致しません";
 			model.addAttribute("passMsg", passMsg);
 			return toInsert(model);
-		} else{
+		} else {
 			// フォームからドメインにプロパティ値をコピー
 			BeanUtils.copyProperties(form, administrator);
 			administratorService.insert(administrator);
-			 return "redirect:/";
+			return "redirect:/";
 		}
-		}
-	
-		
+	}
 
 	/////////////////////////////////////////////////////
 	// ユースケース：ログインをする
@@ -130,21 +128,17 @@ public class AdministratorController {
 	 */
 	@PostMapping("/login")
 	public String login(
-		@Validated LoginForm form,
-		BindingResult result,
+		LoginForm form,
 		RedirectAttributes redirectAttributes,
 		Model model) {
-
-		if(result.hasErrors()) {
-			return toLogin(model);
-		}
-		
-		try {
 			Administrator administrator = administratorService.login(form.getMailAddress(),form.getPassword());
-			redirectAttributes.addAttribute("name", administrator.getName());
-		} catch (Exception e) {
-			return toLogin(model);
-		}
+			
+			if (administrator == null) {
+				redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
+				return "redirect:/";
+			}
+			session.setAttribute("administratorName", administrator.getName());
+		
 		return "redirect:/employee/showList";
 	}
 
